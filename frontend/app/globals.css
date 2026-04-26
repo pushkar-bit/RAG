@@ -1,50 +1,43 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Gargouillette';
+  src: local('Gargouillette'), local('Inter'), local('sans-serif'); 
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #fdfdfd;
+    --foreground: #111111;
+    --font-gargouillette: 'Gargouillette', sans-serif;
+    
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --ring: #18181b;
+    --radius: 0.5rem;
+    --primary: #18181b;
+  }
+ 
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #09090b;
+      --foreground: #fafafa;
+      
+      --border: #27272a;
+      --input: #27272a;
+      --ring: #d4d4d8;
+      --primary: #fafafa;
+    }
   }
 }
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.imgDark {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+ 
+@layer base {
+  * {
+    border-color: var(--border);
   }
-
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-gargouillette);
   }
 }

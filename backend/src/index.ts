@@ -1,25 +1,20 @@
-import express from 'express';
-import helmet from 'helmet';
+declare const process: { env: Record<string, string | undefined> };
+
+import express, { Request, Response } from 'express';
 import cors from 'cors';
-import compression from 'compression';
 
 const app = express();
+const PORT = process.env.PORT || '5000';
 
-app.use(helmet());
 app.use(cors());
-app.use(compression());
 app.use(express.json());
 
-app.get('/api/health', (req, res) => {
-    res.json({
-        status: 'ok',
-        version: '1.0.0',
-        uptime: process.uptime()
-    });
+app.get('/api/status', (req: Request, res: Response) => {
+  res.json({ success: true, message: 'RAG Knowledge Assistant API is running' });
 });
-
-const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
-    console.log(`Express API listening on port ${PORT}`);
+  console.log(`[Server] Running on port ${PORT}`);
 });
+
+export default app;
