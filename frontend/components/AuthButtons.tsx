@@ -28,7 +28,7 @@ export function AuthButtons() {
             </Link>
           </nav>
           <div className="w-px h-4 bg-border hidden md:block" />
-          <UserButton afterSignOutUrl="/" />
+          <UserButton />
         </>
       ) : (
         <SignInButton mode="modal">
