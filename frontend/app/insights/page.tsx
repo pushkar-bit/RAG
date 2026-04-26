@@ -117,12 +117,14 @@ export default function MetricsDashboard() {
   const getRagScore = (run: any) => {
     const m = run.aggregatedMetrics?.rag;
     if (!m) return 0;
-    return m.overall_accuracy_percent != null ? m.overall_accuracy_percent : (m.avgOverallScore * 100 ?? 0);
+    const score = m.overall_accuracy_percent ?? m.avgOverallScore;
+    return score ? score * (m.overall_accuracy_percent != null ? 1 : 100) : 0;
   };
   const getNonRagScore = (run: any) => {
     const m = run.aggregatedMetrics?.nonRag ?? run.aggregatedMetrics?.non_rag;
     if (!m) return 0;
-    return m.overall_accuracy_percent != null ? m.overall_accuracy_percent : (m.avgOverallScore * 100 ?? 0);
+    const score = m.overall_accuracy_percent ?? m.avgOverallScore;
+    return score ? score * (m.overall_accuracy_percent != null ? 1 : 100) : 0;
   };
   const getRagSim = (run: any) => {
     const m = run.aggregatedMetrics?.rag;
