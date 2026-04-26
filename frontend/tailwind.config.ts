@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ["class"],
+  darkMode: "class",
   // Tailwind v4 auto-detects content — explicit paths are optional
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
