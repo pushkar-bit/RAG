@@ -10,7 +10,7 @@ services:
         value: 5000
       - key: NODE_ENV
         value: production
-      - key: MONGODB_URI
+      - key: MONGODB_URL
         sync: false
       - key: PINECONE_API_KEY
         sync: false
