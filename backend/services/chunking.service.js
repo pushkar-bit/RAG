@@ -36,8 +36,13 @@ const chunkText = (text, chunkSize = 1000, chunkOverlap = 200) => {
       chunks.push(chunk);
     }
     
-    // Advance the window keeping overlapping context
-    i = end - chunkOverlap;
+    // Advance the window keeping overlapping context, ensuring we always make progress
+    const nextI = end - chunkOverlap;
+    if (nextI <= i) {
+      i = end; // Force advance to prevent infinite loop
+    } else {
+      i = nextI;
+    }
     
     // Guard clause against infinite loops if overlaps are poorly configured
     if (end >= text.length) break;
