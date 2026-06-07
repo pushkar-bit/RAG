@@ -1,52 +1,37 @@
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { auth } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
     const resolvedParams = await params;
-    const cookieStore = await cookies();
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-            cookies: {
-                getAll() {
-                    return cookieStore.getAll();
-                },
-                setAll(cookiesToSet) {
-                    try {
-                        cookiesToSet.forEach(({ name, value, options }) =>
-                            cookieStore.set(name, value, options)
-                        )
-                    } catch {
-                        // The `setAll` method was called from a Server Component.
-                        // This can be ignored if you have middleware refreshing user sessions.
-                    }
-                },
-            },
-        }
-    );
+    const { userId } = await auth();
 
-    const { data: { session } } = await supabase.auth.getSession();
+    if (!userId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const path = resolvedParams.path.join('/');
+    let path = resolvedParams.path.join('/');
+    if (path.startsWith('api/')) {
+        path = path.slice(4);
+    }
+    
+    // Use the backend server's direct port (5001), fallback to API_BASE_URL, avoid loop
+    const apiBase = process.env.API_BASE_URL || 'http://localhost:5001';
 
     try {
-        const res = await fetch(`${process.env.API_BASE_URL}/api/${path}`, {
+        const headers = new Headers(req.headers);
+        headers.delete('host'); // Let fetch set the proper host for the backend
+
+        const res = await fetch(`${apiBase}/api/${path}`, {
             method: req.method,
-            headers: {
-                'Authorization': `Bearer ${session.access_token}`,
-                'Content-Type': 'application/json',
-                'X-Internal-Secret': process.env.INTERNAL_API_SECRET!,
-            },
-            body: req.method !== 'GET' ? await req.text() : undefined,
+            headers: headers,
+            body: req.method !== 'GET' && req.method !== 'HEAD' ? req.body : undefined,
+            ...(req.method !== 'GET' && req.method !== 'HEAD' ? { duplex: 'half' } : {})
         });
 
+        const responseHeaders = new Headers(res.headers);
         return new NextResponse(res.body, {
             status: res.status,
-            headers: { 'Content-Type': res.headers.get('Content-Type')! },
+            headers: responseHeaders,
         });
     } catch (err: any) {
         console.error('Proxy Error:', err);
@@ -57,3 +42,4 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
 export const GET = POST;
 export const PUT = POST;
 export const DELETE = POST;
+

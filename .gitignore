@@ -74,3 +74,5 @@ coverage/
 # Turbo / Monorepo cache
 # ===========================
 .turbo/
+.next.nosync
+
