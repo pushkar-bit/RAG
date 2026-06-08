@@ -32,7 +32,7 @@ export default function ChatDashboard() {
     if (interaction.feedback) return; // Prevent double feedback
 
     try {
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+      const API_BASE_URL = '/api/proxy';
       const res = await fetch(`${API_BASE_URL}/api/chat/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -72,7 +72,7 @@ export default function ChatDashboard() {
       if (currentQuery) formData.append('query', currentQuery);
       if (currentImage) formData.append('image', currentImage);
 
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+      const API_BASE_URL = '/api/proxy';
       const res = await fetch(`${API_BASE_URL}/api/chat/compare`, {
         method: 'POST',
         body: formData

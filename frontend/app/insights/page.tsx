@@ -88,7 +88,7 @@ export default function MetricsDashboard() {
     setIsLoading(true);
     setError(null);
     try {
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+      const API_BASE_URL = '/api/proxy';
       const res = await fetch(`${API_BASE_URL}/api/evaluation/history`);
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Failed to fetch metrics');

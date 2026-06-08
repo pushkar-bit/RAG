@@ -55,7 +55,7 @@ export default function EvaluationDashboard() {
     setResults(null);
 
     try {
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+      const API_BASE_URL = '/api/proxy';
       const res = await fetch(`${API_BASE_URL}/api/evaluation/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

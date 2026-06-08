@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { UploadCloud, FileText, Trash2, RefreshCw, CheckCircle, XCircle, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+const API_URL = '/api/proxy';
 const DOCS_PER_PAGE = 5;
 
 interface Document {
