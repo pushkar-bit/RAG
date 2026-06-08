@@ -69,7 +69,7 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`[🚀 Server] RAG Knowledge Assistant backend is running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 
-  // Pre-warm the embedding model so the first upload doesn't time out on Render
+  // Pre-warm the embedding model so the first upload doesn't time out on Railway
   const { generateEmbeddings } = require('./services/embedding.service');
   generateEmbeddings(['warmup'])
     .then(() => console.log('[🔥 Server] Embedding model pre-warmed successfully.'))
