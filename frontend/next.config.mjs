@@ -5,7 +5,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  distDir: '.next.nosync',
+  distDir: process.env.VERCEL ? '.next' : '.next.nosync',
   transpilePackages: ['lucide-react'],
 
   // Fix Turbopack workspace root detection when multiple lockfiles exist
