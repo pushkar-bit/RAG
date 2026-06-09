@@ -1,0 +1,6 @@
+node_modules
+.next.nosync
+.next
+.vercel
+.env*
+*.local
